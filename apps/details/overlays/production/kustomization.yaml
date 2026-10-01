@@ -5,4 +5,4 @@ resources:
 images:
 - name: app
   newName: ghcr.io/wasp-foundry/details
-  newTag: abbd0381799d3136e4802be00284c44674babb8c
+  newTag: 35fd20bf4d7b34f2a72b1142208d9c0cab37122e
