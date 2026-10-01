@@ -1,0 +1,62 @@
+name: promote
+
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: Application directory under apps/
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - name: Copy development image tag to production
+        id: promote
+        env:
+          APP: ${{ inputs.app }}
+        run: |
+          if [[ ! "${APP}" =~ ^[a-z]([-a-z0-9]{0,38}[a-z0-9])?$ ]]; then
+            echo "Invalid app name: ${APP}" >&2
+            exit 1
+          fi
+          overlays="apps/${APP}/overlays"
+          if [[ ! -f "${overlays}/development/kustomization.yaml" || ! -f "${overlays}/production/kustomization.yaml" ]]; then
+            echo "apps/${APP} has no development/production overlays" >&2
+            exit 1
+          fi
+          query='.images[] | select(.name == "app")'
+          image_name="$(yq "${query} | .newName" "${overlays}/development/kustomization.yaml")"
+          development_tag="$(yq "${query} | .newTag" "${overlays}/development/kustomization.yaml")"
+          production_tag="$(yq "${query} | .newTag" "${overlays}/production/kustomization.yaml")"
+          if [[ "${development_tag}" == "${production_tag}" ]]; then
+            echo "production already runs ${development_tag}; nothing to promote" >&2
+            exit 1
+          fi
+          cd "${overlays}/production"
+          kustomize edit set image "app=${image_name}:${development_tag}"
+          echo "tag=${development_tag}" >> "${GITHUB_OUTPUT}"
+      - name: Open pull request
+        env:
+          APP: ${{ inputs.app }}
+          TAG: ${{ steps.promote.outputs.tag }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          branch="promote-${APP}-${TAG::7}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch --create "${branch}"
+          git add "apps/${APP}/overlays/production/kustomization.yaml"
+          git commit --message "apps(${APP}): promote ${TAG::7} to production"
+          git push --force origin "${branch}"
+          gh pr create \
+            --base main \
+            --head "${branch}" \
+            --title "promote ${APP} ${TAG::7} to production" \
+            --body "Promotes \`${APP}\` image \`${TAG}\` from development to production. Merging deploys it to the production cluster."
