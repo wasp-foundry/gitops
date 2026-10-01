@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../base
+images:
+- name: app
+  newName: ghcr.io/wasp-foundry/productpage
+  newTag: 199406bb738df1d0fe3f4771ef7402170d012a3b

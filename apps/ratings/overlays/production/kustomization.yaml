@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../base
+images:
+- name: app
+  newName: ghcr.io/wasp-foundry/ratings
+  newTag: b50e8bd3781030b3bf2c8d42e6262c1a18a551b0
