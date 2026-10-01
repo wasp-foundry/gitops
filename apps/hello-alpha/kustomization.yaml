@@ -6,4 +6,4 @@ resources:
 images:
 - name: app
   newName: ghcr.io/wasp-foundry/hello-alpha
-  newTag: 4124aea8ab7ac9c5e47ce53ad1af704b18d34554
+  newTag: 0c720ec5602b9f192a10d99a70b6de9cdd477f35
