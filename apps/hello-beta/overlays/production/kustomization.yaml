@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../base
+images:
+- name: app
+  newName: ghcr.io/wasp-foundry/hello-beta
+  newTag: 80347d26da28cd2b15f368c22d61565577081ec3
