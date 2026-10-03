@@ -4,5 +4,5 @@ resources:
 - ../../base
 images:
 - name: app
-  newName: ghcr.io/wasp-foundry/hello-beta
-  newTag: 80347d26da28cd2b15f368c22d61565577081ec3
+  newName: ghcr.io/wasp-foundry/notification-api
+  newTag: 366d13a3c9857643f66753bd3c8165da70cb380c
