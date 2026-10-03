@@ -5,4 +5,4 @@ resources:
 images:
 - name: app
   newName: ghcr.io/wasp-foundry/hello-beta
-  newTag: 80347d26da28cd2b15f368c22d61565577081ec3
+  newTag: 66a5131f5d94a2ba5bb5a065d9bc80800cec2693
