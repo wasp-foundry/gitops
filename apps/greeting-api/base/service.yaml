@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello-beta
+  name: greeting-api
   labels:
-    app.kubernetes.io/name: hello-beta
-    backstage.io/kubernetes-id: hello-beta
+    app.kubernetes.io/name: greeting-api
+    backstage.io/kubernetes-id: greeting-api
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: hello-beta
+    app.kubernetes.io/name: greeting-api
   ports:
     - name: http
       port: 80
