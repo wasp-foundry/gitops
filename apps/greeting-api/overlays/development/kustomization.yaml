@@ -4,5 +4,5 @@ resources:
 - ../../base
 images:
 - name: app
-  newName: ghcr.io/wasp-foundry/hello-alpha
-  newTag: 19a3aac1401cf752018195371c4aff74371954fb
+  newName: ghcr.io/wasp-foundry/greeting-api
+  newTag: 07f0d3f88fec15a36e49293635d10d5d1073cbf9
